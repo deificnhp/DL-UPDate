@@ -347,3 +347,14 @@ def clock_diagnostic(minutes: pd.DataFrame,
         "break_at_et_17": 17 in inside,
         "session_break_aligned": ok,
     }
+
+
+def detect_broker_utc_offset(last_tick_epoch: float, system_utc_epoch: float) -> float:
+    """Detect broker server UTC offset by comparing last tick server epoch to system UTC epoch.
+
+    Rounds the difference to the nearest half-hour (or hour) during market open hours.
+    For instance, if server tick is 10800s ahead of UTC, offset is +3.0 hours.
+    """
+    diff_sec = float(last_tick_epoch) - float(system_utc_epoch)
+    diff_hours = diff_sec / 3600.0
+    return round(diff_hours * 2.0) / 2.0

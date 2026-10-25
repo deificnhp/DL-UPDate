@@ -92,6 +92,15 @@ def _print_prediction(pred: QuantilePrediction, as_json: bool) -> None:
     print("-" * 72)
     print(f"  scale {pred.scale:.6e}   sigma_ewma {pred.sigma_ewma:.6e}   "
           f"slot_next {pred.slot_next}  dow_next {pred.dow_next}")
+    print("-" * 72)
+    print(f"  health state  : {pred.health_state}   valid={pred.forecast_valid}   "
+          f"sizing_cap={pred.sizing_multiplier_cap * 100:.0f}%")
+    if pred.health_reasons:
+        print(f"  health reasons: {', '.join(pred.health_reasons)}")
+    print(f"  model_version : {pred.model_version}   calib_version={pred.calib_version}")
+    if pred.ens_dispersion:
+        disp_str = ", ".join(f"{x:.4f}" for x in pred.ens_dispersion)
+        print(f"  ens_dispersion: [{disp_str}]")
     print()
 
 
